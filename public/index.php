@@ -1,0 +1,1 @@
+<?php echo "index.phpが表示されています"?>
