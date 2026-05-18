@@ -5,6 +5,7 @@ require_once '../src/helpers.php';
 require_once '../src/Database.php';
 
 $db = new Database();
+$auth = new Auth();
 
 //  POST時の処理
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -19,8 +20,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $user = $users[0] ?? null;
 
     if (isset($user) && password_verify($password, $user['password_hash'])) {
-        echo "ログイン成功";
+        $auth->login($user);
+
+        switch($user['role']) {
+            case 'student':
+            header("Location: /student/dashboard.php");
+            break;
+
+            case 'teacher':
+            header("Location: /teacher/dashboard.php");
+            break;
+        }
+        
+        exit;
     } else {
+        var_dump($user);
         echo "ログイン失敗";
     }
 }
