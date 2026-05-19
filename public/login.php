@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-$pageTitle = "stdy!!|ログインページ";
+$pageTitle = "ログインページ|study!!";
 ?>
 
 <?php require_once '../templates/header.php'; ?>
