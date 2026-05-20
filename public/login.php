@@ -1,8 +1,8 @@
 <?php
 session_start();
-require_once '../src/Auth.php';
-require_once '../src/helpers.php';
-require_once '../src/Database.php';
+require_once __DIR__ .'/../src/Auth.php';
+require_once __DIR__ .'/../src/helpers.php';
+require_once __DIR__ .'/../src/Database.php';
 
 $db = new Database();
 $auth = new Auth();
@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 $pageTitle = "ログインページ|study!!";
 ?>
 
-<?php require_once '../templates/header.php'; ?>
+<?php require_once __DIR__ .'/../templates/header.php'; ?>
 
 <!-- フォームのHTML -->
 
@@ -59,4 +59,4 @@ $pageTitle = "ログインページ|study!!";
     <input type="submit" value="ログイン">
 </form>
 
-<?php require_once '../templates/footer.php'; ?>
+<?php require_once __DIR__ . '/../templates/footer.php'; ?>

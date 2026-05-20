@@ -1,9 +1,9 @@
 <?php
 session_start();
 //必要なファイル読み込み
-require_once '../src/Auth.php';
-require_once '../src/helpers.php';
-require_once '../src/Database.php';
+require_once __DIR__.'/../src/Auth.php';
+require_once __DIR__.'/../src/helpers.php';
+require_once __DIR__.'/../src/Database.php';
 
 $db = new Database();
 
@@ -31,7 +31,7 @@ if($_SERVER['REQUEST_METHOD'] === 'POST'){
 $pageTitle = "ユーザー登録|study!!";
 ?>
 
-<?php require_once '../templates/header.php'; ?>
+<?php require_once __DIR__.'/../templates/header.php'; ?>
 
 <!-- 登録フォーム -->
  <form method="POST">
@@ -49,4 +49,4 @@ $pageTitle = "ユーザー登録|study!!";
     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
  </form>
 
-<?php require_once '../templates/footer.php'; ?>
+<?php require_once __DIR__.'/../templates/footer.php'; ?>

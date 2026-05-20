@@ -5,7 +5,7 @@ class Database {
     private $pdo;
 
     public function __construct(){
-        require_once '../config/database.php';
+        require_once __DIR__.'/../config/database.php';
         $this->pdo = new PDO("mysql:host=$host;dbname=$dbname;charset=utf8",
         $username,
         $password
