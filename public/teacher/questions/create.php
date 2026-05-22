@@ -18,27 +18,27 @@ $auth->requireRole('teacher');
 $teacherId = $_SESSION['user_id'];
 
 
-if($_SERVER['REQUEST_METHOD'] === 'POST'){
-csrf_verify();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+     csrf_verify();
 
-$title         = $_POST['title'];
-$content       = $_POST['content'];
-$questionType  = $_POST['question_type'];
-// 問題種別に応じて正解を取得（multiple_choiceはquestion_optionsで管理）
-$correctAnswer = match($questionType) {
-    'short_answer'    => $_POST['short_answer_answer'],
-    'true_false'      => $_POST['true_false_answer'],
-    'multiple_choice' => null,
-};
-$explanation   = $_POST['explanation'];
+     $title         = $_POST['title'];
+     $content       = $_POST['content'];
+     $questionType  = $_POST['question_type'];
+     // 問題種別に応じて正解を取得（multiple_choiceはquestion_optionsで管理）
+     $correctAnswer = match ($questionType) {
+          'short_answer'    => $_POST['short_answer_answer'],
+          'true_false'      => $_POST['true_false_answer'],
+          'multiple_choice' => null,
+     };
+     $explanation   = $_POST['explanation'];
 
-$questions = $db->query(
-"INSERT INTO questions (teacher_id , title , content, question_type, correct_answer, explanation) VALUES (? , ? , ? , ? , ? , ?)",
-[$teacherId , $title  , $content , $questionType , $correctAnswer ,$explanation]
-);
+     $questions = $db->query(
+          "INSERT INTO questions (teacher_id , title , content, question_type, correct_answer, explanation) VALUES (? , ? , ? , ? , ? , ?)",
+          [$teacherId, $title, $content, $questionType, $correctAnswer, $explanation]
+     );
 
-header('Location: /teacher/questions/index.php');
-exit;
+     header('Location: /teacher/questions/index.php');
+     exit;
 }
 ?>
 
@@ -48,44 +48,44 @@ exit;
 
 <!-- フォームのHTML -->
 <form method="POST" id="">
-<input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-<p>タイトルを入力</p>
-<input type="text" name="title" id="">
+     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+     <p>タイトルを入力</p>
+     <input type="text" name="title" id="">
 
-<p>問題の内容を入力</p>
-<textarea name="content" id="" cols="30" rows="10"></textarea>
+     <p>問題の内容を入力</p>
+     <textarea name="content" id="" cols="30" rows="10"></textarea>
 
-<p>問題種別を選択</p>
-<label for="">
-     <input type="radio" name="question_type" value="multiple_choice" id="">
+     <p>問題種別を選択</p>
+     <label for="">
+          <input type="radio" name="question_type" value="multiple_choice" id="">
 
-     選択問題
-</label>
-<br>
-<label for="">
-     <input type="radio" name="question_type" value="short_answer" id="">
-     記述問題
-</label>
-<br>
-<label for="">
-     <input type="radio" name="question_type" value="true_false" id="">
-     正誤問題
-</label>
-<br>
+          選択問題
+     </label>
+     <br>
+     <label for="">
+          <input type="radio" name="question_type" value="short_answer" id="">
+          記述問題
+     </label>
+     <br>
+     <label for="">
+          <input type="radio" name="question_type" value="true_false" id="">
+          正誤問題
+     </label>
+     <br>
 
-<p>回答を入力</p>
-<div id="answer-area">
-     <input type="text" name="multiple_choice_answer" id="" value="multiple_choice_answer_test message">
-     <input type="text" name="short_answer_answer" id="" value="short_answer_answer_test message">
-     <input type="text" name="true_false_answer" id="" value="true_false_answer_test message">
-</div>
+     <p>回答を入力</p>
+     <div id="answer-area">
+          <input type="text" name="multiple_choice_answer" id="" value="multiple_choice_answer_test message">
+          <input type="text" name="short_answer_answer" id="" value="short_answer_answer_test message">
+          <input type="text" name="true_false_answer" id="" value="true_false_answer_test message">
+     </div>
 
 
 
-<p>解説を入力</p>
-<textarea name="explanation" id="" cols="30" rows="10"></textarea>
+     <p>解説を入力</p>
+     <textarea name="explanation" id="" cols="30" rows="10"></textarea>
 
-<input type="submit" value="登録">
+     <input type="submit" value="登録">
 
 </form>
 
@@ -102,7 +102,5 @@ exit;
                answerArea.dataset.answerType = radio.value;
           });
      });
-
-     
 </script>
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>
