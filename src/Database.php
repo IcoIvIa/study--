@@ -18,5 +18,9 @@ class Database {
 
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+public function lastInsertId(): string {
+    return $this->pdo->lastInsertId();
+}
     }
 
