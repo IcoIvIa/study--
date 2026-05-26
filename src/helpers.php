@@ -17,3 +17,16 @@ function csrf_verify() : void {
         exit('不正なリクエストです');
     }
 }
+
+function flash_set(string $message, string $type = 'success'): void {
+    $_SESSION['flash'] = ['message' => $message, 'type' => $type];
+}
+
+function flash_get(): ?array {
+    if (isset($_SESSION['flash'])){
+        $flash = $_SESSION['flash'];
+        unset($_SESSION['flash']);
+        return $flash;
+    }
+    return null;
+}

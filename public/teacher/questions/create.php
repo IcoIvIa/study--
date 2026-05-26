@@ -37,6 +37,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           [$teacherId, $title, $content, $questionType, $correctAnswer, $explanation]
      );
 
+     flash_set('問題を作成しました');
      header('Location: /teacher/questions/index.php');
      exit;
 }

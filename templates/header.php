@@ -1,3 +1,6 @@
+<?php
+require_once __DIR__.'/../src/helpers.php';
+?>
 <!DOCTYPE html>
 <html lang="ja">
 
@@ -10,3 +13,8 @@
 <body>
 
     <p>testmassage header ok </p>
+
+    <?php $flash = flash_get(); ?>
+    <?php if ($flash): ?>
+        <p><?= h($flash['message']) ?></p>
+        <?php endif; ?>
