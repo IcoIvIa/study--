@@ -4,6 +4,7 @@ session_start();
 require_once __DIR__ . '/../src/Auth.php';
 require_once __DIR__ . '/../src/helpers.php';
 require_once __DIR__ . '/../src/Database.php';
+require_once __DIR__ . '/../src/Validator.php';
 
 $db = new Database();
 
@@ -15,8 +16,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        // バリデーション
+    $validator = new Validator($_POST);
+    $validator->required('name', '名前');
+    $validator->required('email', 'メールアドレス');
+    $validator->required('password', 'パスワード');
 
+
+
+        if ($validator->hasErrors()) {
+        $errors = $validator->getErrors();
+    } else {
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
     // DBにINSERT
     $users = $db->query(
         "INSERT INTO users (name , email , password_hash , role) VALUES (? , ? , ? , ?)",
@@ -26,6 +37,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     // リダイレクト
     header("Location: /login.php");
     exit;
+        }
+
 }
 
 $pageTitle = "ユーザー登録|study!!";
@@ -39,10 +52,19 @@ $pageTitle = "ユーザー登録|study!!";
 
     <p>名前</p>
     <input type="text" name="name" id="">
+    <?php if (isset($errors['name'])): ?>
+    <p><?= h($errors['name']) ?></p>
+<?php endif; ?>
     <p>メールアドレス</p>
     <input type="email" name="email" id="">
+    <?php if (isset($errors['email'])): ?>
+    <p><?= h($errors['email']) ?></p>
+<?php endif; ?>
     <p>パスワード</p>
     <input type="password" name="password" id="">
+    <?php if (isset($errors['password'])): ?>
+    <p><?= h($errors['password']) ?></p>
+<?php endif; ?>
 
     <br>
     <input type="submit" value="登録">
