@@ -17,7 +17,13 @@ $questions = $db->query(
     "SELECT * FROM questions WHERE id = ?",
     [$id]
 );
-$question = $questions[0];
+$question = $questions[0] ?? null;
+if ($question === null){
+    if ($question === null) {
+    header('Location: /student/questions/index.php');
+    exit;
+}
+}
 // 4. POST処理（回答を保存・正誤判定）
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -42,7 +48,6 @@ header('Location: /student/questions/index.php');
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 <!-- ここからHTML -->
 
-// 3. 回答フォームを表示
 <h2><?= h($question['title']) ?></h2>
 <p><?= h($question['content']) ?></p>
 

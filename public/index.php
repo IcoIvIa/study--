@@ -38,8 +38,8 @@ $base = '//' . $_SERVER['HTTP_HOST'] . rtrim(dirname($_SERVER['SCRIPT_NAME']), '
             <li><a href="<?= $base ?>/teacher/dashboard.php">ダッシュボード</a></li>
             <li><a href="<?= $base ?>/teacher/questions/index.php">問題管理(一覧)</a></li>
             <li><a href="<?= $base ?>/teacher/questions/create.php">問題作成</a></li>
-            <li><a href="<?= $base ?>/teacher/questions/edit.php?id=1">問題編集（id=1）</a></li>
-            <li><a href="<?= $base ?>/teacher/questions/answers.php?id=1">回答一覧（id=1）</a></li>
+            <li><a href="<?= $base ?>/teacher/questions/edit.php?id=3">問題編集（id=1）</a></li>
+            <li><a href="<?= $base ?>/teacher/questions/answers.php?id=3">回答一覧（id=1）</a></li>
             <li><a href="<?= $base ?>/teacher/messages/index.php">質問管理</a></li>
             <li><a href="<?= $base ?>/teacher/messages/show.php?id=1">質問返信（id=1）</a></li>
         </ul>

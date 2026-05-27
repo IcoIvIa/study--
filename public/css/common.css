@@ -1,3 +1,59 @@
+:root {
+    --color-primary: #4A90D9;
+    --color-bg: #F5F7FA;
+    --color-text: #333;
+    --color-white: #fff;
+    --color-error: #E74C3C;
+    --spacing-sm: 0.5rem;
+    --spacing-md: 1rem;
+    --spacing-lg: 2rem;
+    --radius: 8px;
+}
+
+body {
+    font-family: system-ui, sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
+    margin: 0;
+    padding: var(--spacing-md);
+}
+
+.container {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.mx-auto {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.text-center {
+    text-align: center;
+}
+
+button, input[type="submit"] {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    box-sizing: border-box;
+}
+
 /* \public\teacher\dashboard.php の問題種別解答入力欄表示ロジック*/
 
 [name$="_answer"] { display: none; }

@@ -20,7 +20,11 @@ $questions = $db->query(
     [$id, $teacherId]
 );
 // 1件目をとりだす
-$question = $questions[0];
+$question = $questions[0] ?? null;
+if ($question === null) {
+    header('Location: /teacher/questions/index.php');
+    exit;
+}
 // 3. POST処理（UPDATE）
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {

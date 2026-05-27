@@ -16,7 +16,15 @@ $questionId = $_GET['id'];
 $question = $db->query(
     "SELECT * FROM questions WHERE id = ?",
     [$questionId]
-)[0];
+)[0] ?? null;
+if ($question === null) {
+    header('Location: /teacher/questions/index.php');
+    exit;
+}
+
+
+
+
 
 $ansers = $db->query(
     "SELECT answers.*, users.name 

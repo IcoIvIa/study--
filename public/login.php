@@ -68,14 +68,21 @@ $pageTitle = "ログインページ|study!!";
 <form method="POST">
     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
 
+    <div class="container">
+    <h1 class="text-center">ログイン</h1>
+    <br>
+    <p>メールアドレス</p>
     <input type="email" name="email" id="">
     <?php show_error($errors ?? [] , 'email') ?>
-
-    <input type="password" name="password" id="">
+    <br>
+    <p>パスワード</p>
+    <input type="password" name="password" >
     <?php show_error($errors ?? [] , 'password') ?>
     
 
-    <input type="submit" value="ログイン">
+    <br>
+    <input type="submit" value="ログイン" class="mx-auto">
+    </div>
 </form>
 
 <?php require_once __DIR__ . '/../templates/footer.php'; ?>
