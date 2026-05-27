@@ -16,7 +16,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-        // バリデーション
+    // バリデーション
     $validator = new Validator($_POST);
     $validator->required('name', '名前');
     $validator->required('email', 'メールアドレス');
@@ -24,21 +24,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 
 
-        if ($validator->hasErrors()) {
+    if ($validator->hasErrors()) {
         $errors = $validator->getErrors();
     } else {
-            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-    // DBにINSERT
-    $users = $db->query(
-        "INSERT INTO users (name , email , password_hash , role) VALUES (? , ? , ? , ?)",
-        [$name, $email, $passwordHash, 'student']
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+        // DBにINSERT
+        $users = $db->query(
+            "INSERT INTO users (name , email , password_hash , role) VALUES (? , ? , ? , ?)",
+            [$name, $email, $passwordHash, 'student']
 
-    );
-    // リダイレクト
-    header("Location: /login.php");
-    exit;
-        }
-
+        );
+        // リダイレクト
+        header("Location: /login.php");
+        exit;
+    }
 }
 
 $pageTitle = "ユーザー登録|study!!";
@@ -52,19 +51,13 @@ $pageTitle = "ユーザー登録|study!!";
 
     <p>名前</p>
     <input type="text" name="name" id="">
-    <?php if (isset($errors['name'])): ?>
-    <p><?= h($errors['name']) ?></p>
-<?php endif; ?>
+    <?php show_error($errors ?? [], 'name') ?>
     <p>メールアドレス</p>
     <input type="email" name="email" id="">
-    <?php if (isset($errors['email'])): ?>
-    <p><?= h($errors['email']) ?></p>
-<?php endif; ?>
+    <?php show_error($errors ?? [], 'email') ?>
     <p>パスワード</p>
     <input type="password" name="password" id="">
-    <?php if (isset($errors['password'])): ?>
-    <p><?= h($errors['password']) ?></p>
-<?php endif; ?>
+    <?php show_error($errors ?? [], 'password') ?>
 
     <br>
     <input type="submit" value="登録">

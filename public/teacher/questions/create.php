@@ -9,6 +9,7 @@ session_start();
 require_once __DIR__ . '/../../../src/Auth.php';
 require_once __DIR__ . '/../../../src/helpers.php';
 require_once __DIR__ . '/../../../src/Database.php';
+require_once __DIR__ . '/../../../src/Validator.php';
 
 $db = new Database();
 $auth = new Auth();
@@ -18,28 +19,40 @@ $auth->requireRole('teacher');
 $teacherId = $_SESSION['user_id'];
 
 
+
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      csrf_verify();
 
      $title         = $_POST['title'];
      $content       = $_POST['content'];
      $questionType  = $_POST['question_type'];
-     // 問題種別に応じて正解を取得（multiple_choiceはquestion_optionsで管理）
-     $correctAnswer = match ($questionType) {
-          'short_answer'    => $_POST['short_answer_answer'],
-          'true_false'      => $_POST['true_false_answer'],
-          'multiple_choice' => null,
-     };
-     $explanation   = $_POST['explanation'];
 
-     $questions = $db->query(
-          "INSERT INTO questions (teacher_id , title , content, question_type, correct_answer, explanation) VALUES (? , ? , ? , ? , ? , ?)",
-          [$teacherId, $title, $content, $questionType, $correctAnswer, $explanation]
-     );
+     $validator = new Validator($_POST);
+     $validator->required('title', 'タイトル');
+     $validator->required('content', '問題の内容');
+     $validator->required('question_type', '問題種別');
 
-     flash_set('問題を作成しました');
-     header('Location: /teacher/questions/index.php');
-     exit;
+     if ($validator->hasErrors()) {
+          $errors = $validator->getErrors();
+     } else {
+
+          $explanation   = $_POST['explanation'];
+          // 問題種別に応じて正解を取得（multiple_choiceはquestion_optionsで管理）
+          $correctAnswer = match ($questionType) {
+               'short_answer'    => $_POST['short_answer_answer'],
+               'true_false'      => $_POST['true_false_answer'],
+               'multiple_choice' => null,
+          };
+
+          $questions = $db->query(
+               "INSERT INTO questions (teacher_id , title , content, question_type, correct_answer, explanation) VALUES (? , ? , ? , ? , ? , ?)",
+               [$teacherId, $title, $content, $questionType, $correctAnswer, $explanation]
+          );
+
+          flash_set('問題を作成しました');
+          header('Location: /teacher/questions/index.php');
+          exit;
+     }
 }
 ?>
 
@@ -52,13 +65,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
      <p>タイトルを入力</p>
      <input type="text" name="title" id="">
+     <?php show_error($errors ?? [], 'title') ?>
 
      <p>問題の内容を入力</p>
      <textarea name="content" id="" cols="30" rows="10"></textarea>
+     <?php show_error($errors ?? [], 'content') ?>
 
      <p>問題種別を選択</p>
      <label for="">
           <input type="radio" name="question_type" value="multiple_choice" id="">
+          <?php show_error($errors ?? [], 'question_type') ?>
 
           選択問題
      </label>

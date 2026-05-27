@@ -3,6 +3,7 @@ session_start();
 require_once __DIR__ . '/../../../src/Auth.php';
 require_once __DIR__ . '/../../../src/helpers.php';
 require_once __DIR__ . '/../../../src/Database.php';
+require_once __DIR__ . '/../../../src/Validator.php';
 
 $db = new Database();
 $auth = new Auth();
@@ -28,23 +29,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $title         = $_POST['title'];
     $content       = $_POST['content'];
     $questionType  = $_POST['question_type'];
-    // 問題種別に応じて正解を取得（multiple_choiceはquestion_optionsで管理）
-    $correctAnswer = match ($questionType) {
-        'short_answer'    => $_POST['short_answer_answer'],
-        'true_false'      => $_POST['true_false_answer'],
-        'multiple_choice' => null,
-    };
+    $validator = new Validator($_POST);
+    $validator->required('title', 'タイトル');
+    $validator->required('content', '問題の内容');
+    $validator->required('question_type', '問題種別');
+
+    if ($validator->hasErrors()) {
+        $errors = $validator->getErrors();
+    } else {
+
+        // 問題種別に応じて正解を取得（multiple_choiceはquestion_optionsで管理）
+        $correctAnswer = match ($questionType) {
+            'short_answer'    => $_POST['short_answer_answer'],
+            'true_false'      => $_POST['true_false_answer'],
+            'multiple_choice' => null,
+        };
 
 
 
 
-    $explanation   = $_POST['explanation'];
+        $explanation   = $_POST['explanation'];
 
-    $questions = $db->query(
-        "UPDATE  questions SET  title = ? , content = ? , question_type = ? , correct_answer = ? , explanation = ? WHERE id = ? ",
-        [$title, $content, $questionType, $correctAnswer, $explanation, $id]
-    );
-    exit;
+        $questions = $db->query(
+            "UPDATE  questions SET  title = ? , content = ? , question_type = ? , correct_answer = ? , explanation = ? WHERE id = ? ",
+            [$title, $content, $questionType, $correctAnswer, $explanation, $id]
+        );
+        flash_set('問題を更新しました');
+        header('Location: /teacher/questions/index.php');
+        exit;
+    }
 }
 
 ?>
@@ -59,13 +72,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <p>タイトルを編集</p>
     <input type="text" name="title" id="" value="<?= h($question['title']) ?>">
+    <?php show_error($errors ?? [], 'title') ?>
 
     <p>問題の内容を編集</p>
     <textarea name="content" id="" cols="30" rows="10"><?= h($question['content']) ?></textarea>
+    <?php show_error($errors ?? [], 'content') ?>
 
     <p>問題種別を選択</p>
     <label for="">
         <input type="radio" name="question_type" value="multiple_choice" id="">
+        <?php show_error($errors ?? [], 'question_type') ?>
 
         選択問題
     </label>

@@ -30,3 +30,9 @@ function flash_get(): ?array {
     }
     return null;
 }
+
+function show_error(array $errors, string $field): void {
+    if (isset($errors[$field])) {
+        echo '<p>' . h($errors[$field]) . '</p>';
+    }
+}

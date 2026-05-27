@@ -4,6 +4,7 @@ session_start();
 require_once __DIR__ . '/../src/Auth.php';
 require_once __DIR__ . '/../src/helpers.php';
 require_once __DIR__ . '/../src/Database.php';
+require_once __DIR__ . '/../src/Validator.php';
 
 $db = new Database();
 $auth = new Auth();
@@ -27,37 +28,45 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
     $password = $_POST['password'];
 
-    $passwordHash = password_hash($password, PASSWORD_DEFAULT);
-    
-    if(!empty($password)){
-    $user = $db->query(
-        "UPDATE users SET name = ?, email = ?, password_hash = ? WHERE id = ?",
-        [$name, $email, $passwordHash, $id]
-    );
+    $validator = new Validator($_POST);
+    $validator->required('name', '名前');
+    $validator->required('email', 'メールアドレス');
 
+    if ($validator->hasErrors()) {
+        $errors = $validator->getErrors();
     } else {
-    $user = $db->query(
-        "UPDATE users SET name = ?, email = ? WHERE id = ?",
-        [$name, $email, $id]
-    );
 
+        $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+
+        if (!empty($password)) {
+            $user = $db->query(
+                "UPDATE users SET name = ?, email = ?, password_hash = ? WHERE id = ?",
+                [$name, $email, $passwordHash, $id]
+            );
+        } else {
+            $user = $db->query(
+                "UPDATE users SET name = ?, email = ? WHERE id = ?",
+                [$name, $email, $id]
+            );
+        }
+        header("Location: /mypage.php");
+        exit;
     }
-    header("Location: /mypage.php");
-    exit;
-
 }
 ?>
 
 <?php require_once __DIR__ . '/../templates/header.php'; ?>
 <!-- ユーザー情報 -->
- <?= h($user['name']) ?>
- <?= h($user['email']) ?>
+<?= h($user['name']) ?>
+<?= h($user['email']) ?>
 <!-- 登録フォーム -->
 <form method="POST">
     <p>名前</p>
     <input type="text" name="name" id="" value="<?= h($user['name']) ?>">
+    <?php show_error($errors ?? [], 'name') ?>
     <p>メールアドレス</p>
     <input type="email" name="email" id="" value="<?= h($user['email']) ?>">
+    <?php show_error($errors ?? [], 'email') ?>
     <p>パスワード</p>
     <input type="password" name="password" id="">
 
