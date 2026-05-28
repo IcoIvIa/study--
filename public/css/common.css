@@ -4,10 +4,17 @@
     --color-text: #333;
     --color-white: #fff;
     --color-error: #E74C3C;
+    --spacing-xs: 0.2rem;
     --spacing-sm: 0.5rem;
     --spacing-md: 1rem;
     --spacing-lg: 2rem;
     --radius: 8px;
+}
+
+
+a {
+    color: inherit;
+    text-decoration: none;
 }
 
 body {
@@ -19,8 +26,32 @@ body {
 }
 
 .container {
-    max-width: 800px;
+    max-width: 960px;
     margin: 0 auto;
+}
+
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--spacing-md);
+    margin-bottom: var(--spacing-md);
+}
+
+.card {
+    background: var(--color-white);
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
+}
+
+.margin-bottom-zero {
+    margin-bottom: 5px;
 }
 
 .mx-auto {
@@ -29,11 +60,36 @@ body {
     margin-right: auto;
 }
 
+.color-red {
+    color: var(--color-error);
+}
+
 .text-center {
     text-align: center;
 }
 
-button, input[type="submit"] {
+.text-right {
+    text-align: right;
+}
+.indent {
+    padding-left: var(--spacing-lg);
+}
+.size-l {
+    font-size: large;
+    font-weight: bold;
+}
+
+.stats-area {
+    background: rgb(160, 196, 196);
+    border-radius: var(--radius);
+    padding: var(--spacing-md);
+    height: 20vh;
+    margin-bottom: var(--spacing-md);
+    overflow-y: auto;
+}
+
+button,
+input[type="submit"] {
     background: var(--color-primary);
     color: var(--color-white);
     border: none;
@@ -54,9 +110,39 @@ textarea {
     box-sizing: border-box;
 }
 
+.date {
+    font-size: 0.75rem;
+    letter-spacing: -0.05em;
+    color: #616161;
+}
+
+.tight {
+    margin: 0;
+}
+
+.badge-correct {
+    background: #2ECC71;
+    color: white;
+    border-radius: var(--radius);
+    padding: var(--spacing-xs) var(--spacing-lg);
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
+.badge-incorrect {
+    background: var(--color-error);
+    color: white;
+    border-radius: var(--radius);
+    padding: var(--spacing-xs) var(--spacing-lg);
+    font-size: 0.8rem;
+    display: inline-block;
+}
+
 /* \public\teacher\dashboard.php の問題種別解答入力欄表示ロジック*/
 
-[name$="_answer"] { display: none; }
+[name$="_answer"] {
+    display: none;
+}
 
 [data-answer-type="multiple_choice"] [name="multiple_choice_answer"],
 [data-answer-type="short_answer"] [name="short_answer_answer"],
