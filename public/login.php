@@ -70,6 +70,7 @@ $pageTitle = "ログインページ|study!!";
 
     <div class="container">
     <h1 class="text-center">ログイン</h1>
+    <hr>
     <br>
     <p>メールアドレス</p>
     <input type="email" name="email" id="">
@@ -82,6 +83,7 @@ $pageTitle = "ログインページ|study!!";
 
     <br>
     <input type="submit" value="ログイン" class="mx-auto">
+    <hr>
     </div>
 </form>
 

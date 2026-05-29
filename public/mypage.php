@@ -13,13 +13,10 @@ $id = $_SESSION['user_id'];
 
 $auth->requireLogin();
 
-// 1. ログイン中のユーザー情報を表示
 $user = $db->query(
     "SELECT * FROM users WHERE id = ? ",
     [$id]
 )[0];
-// 2. 名前・メールアドレスを変更できる
-// 3. パスワードを変更できる
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
@@ -56,22 +53,32 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 ?>
 
 <?php require_once __DIR__ . '/../templates/header.php'; ?>
-<!-- ユーザー情報 -->
-<?= h($user['name']) ?>
-<?= h($user['email']) ?>
-<!-- 登録フォーム -->
-<form method="POST">
-    <p>名前</p>
-    <input type="text" name="name" id="" value="<?= h($user['name']) ?>">
-    <?php show_error($errors ?? [], 'name') ?>
-    <p>メールアドレス</p>
-    <input type="email" name="email" id="" value="<?= h($user['email']) ?>">
-    <?php show_error($errors ?? [], 'email') ?>
-    <p>パスワード</p>
-    <input type="password" name="password" id="">
-
+<div class="container">
+    <h2>プロフィールを変更出来ます</h2>
+    <hr>
     <br>
-    <input type="submit" value="更新">
-    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-</form>
+    <!-- ユーザー情報 -->
+    <div class="text-center">
+        <?= h($user['name']) ?>
+        <?= " : " ?>
+        <?= h($user['email']) ?>
+    </div>
+    <br>
+    <!-- 登録フォーム -->
+    <form method="POST">
+        <p>名前</p>
+        <input type="text" name="name" id="" value="<?= h($user['name']) ?>">
+        <?php show_error($errors ?? [], 'name') ?>
+        <p>メールアドレス</p>
+        <input type="email" name="email" id="" value="<?= h($user['email']) ?>">
+        <?php show_error($errors ?? [], 'email') ?>
+        <p>パスワード</p>
+        <input type="password" name="password" id="">
+
+        <br>
+        <input class="mx-auto" type="submit" value="変更">
+        <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+    </form>
+    <hr>
+</div>
 <?php require_once __DIR__ . '/../templates/footer.php'; ?>

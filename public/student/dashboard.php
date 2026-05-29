@@ -68,7 +68,10 @@ $pageTitle = '生徒ページ|study!!';
 
 <!-- ダッシュボードの中身 -->
 <div class="container">
-    <h2><?= h($_SESSION['user_name']) ?>さんのダッシュボート</h2>
+    <h1 class="text-center"><?= h($_SESSION['user_name']) ?>さんのダッシュボート</h1>
+    <hr>
+    <br>
+
     <div class="grid-2 stats-area">
 
         <div>
@@ -78,7 +81,7 @@ $pageTitle = '生徒ページ|study!!';
         </div>
 
         <div>
-            <p>最新の解答５件</p>
+            <p class="size-l">最新の解答５件</p>
             <?php foreach ($recentAnswers as $answer): ?>
                 <p class="margin-bottom-zero"><span class="date"><?= h($answer['created_at']) ?></span> <?= h($answer['title']) ?></p>
                 <p class="tight  <?= $answer['is_correct'] ? 'badge-correct' : 'badge-incorrect' ?>">
@@ -90,10 +93,8 @@ $pageTitle = '生徒ページ|study!!';
 
     <div class="grid-2">
         <div class="card">
-
-
             <a href="/student/questions/index.php">
-                <h2 class="text-center">問題ページを見る</h2>
+                <h2 class="text-center">問題を解く</h2>
                 <?php if (!empty($unansweredQuestions)): ?>
                     <p class="color-red text-center">未回答の問題があります！</p>
                 <?php endif; ?>
@@ -103,15 +104,30 @@ $pageTitle = '生徒ページ|study!!';
             </a>
         </div>
 
-        <div class="card">
-            <a href="/student/messages/index.php">
-                <h2 class="text-center">質問ページを見る</h2>
-                <?php foreach ($messages as $message): ?>
-                    <p><span class="date"><?= h($message['created_at']) ?></span> <?= h($message['title']) ?></p>
-                <?php endforeach; ?>
-            </a>
+        <div>
+            <div class="card">
+                <a href="/student/messages/index.php">
+                    <h2 class="text-center">質問を見る</h2>
+                    <?php foreach ($messages as $message): ?>
+                        <p><span class="date"><?= h($message['created_at']) ?></span> <?= h($message['title']) ?></p>
+                    <?php endforeach; ?>
+                </a>
+            </div>
+
+            <div class="card">
+                <a href="/student/messages/create.php">
+                    <h2 class="text-center">質問をする</h2>
+                    <p class="text-center">質問投稿フォームに移動します</p>
+                </a>
+            </div>
         </div>
+
     </div>
+
+
+</div>
+
+<hr>
 </div>
 
 <?php require_once __DIR__ . '/../../templates/footer.php'; ?>

@@ -46,22 +46,27 @@ $pageTitle = "ユーザー登録|study!!";
 <?php require_once __DIR__ . '/../templates/header.php'; ?>
 
 <!-- 登録フォーム -->
-<form method="POST">
-    <p>ユーザー登録</p>
+<div class="container">
+    <form method="POST">
 
-    <p>名前</p>
-    <input type="text" name="name" id="">
-    <?php show_error($errors ?? [], 'name') ?>
-    <p>メールアドレス</p>
-    <input type="email" name="email" id="">
-    <?php show_error($errors ?? [], 'email') ?>
-    <p>パスワード</p>
-    <input type="password" name="password" id="">
-    <?php show_error($errors ?? [], 'password') ?>
+        <h2 class="text-center">新規登録</h2>
+        <hr>
 
-    <br>
-    <input type="submit" value="登録">
-    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-</form>
+        <p>名前</p>
+        <input type="text" name="name" id="">
+        <?php show_error($errors ?? [], 'name') ?>
+        <p>メールアドレス</p>
+        <input type="email" name="email" id="">
+        <?php show_error($errors ?? [], 'email') ?>
+        <p>パスワード</p>
+        <input type="password" name="password" id="">
+        <?php show_error($errors ?? [], 'password') ?>
+
+        <br>
+        <input class="mx-auto" type="submit" value="登録">
+        <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+    </form>
+    <hr>
+</div>
 
 <?php require_once __DIR__ . '/../templates/footer.php'; ?>

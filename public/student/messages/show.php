@@ -10,19 +10,43 @@ $id = $_SESSION['user_id'];
 $auth->requireRole('student');
 $threadId = $_GET['id'];
 
-
-$replies = $db->query(
-    "SELECT * FROM message_replies WHERE message_thread_id = ?",
+$message = $db->query(
+    "SELECT * FROM message_threads WHERE id = ?",
     [$threadId]
 );
 
+$replies = $db->query(
+    "SELECT 
+    message_replies.*, 
+    users.name AS sender_name 
+    FROM message_replies 
+    JOIN users ON message_replies.sender_id = users.id 
+    WHERE message_replies.message_thread_id = ?",
+    [$threadId]
+);
 ?>
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
-<!-- ここからHTML -->
- <?php foreach($replies as $replie): ?>
-    <p> <?= h($replie['body']) ?></p>
-    <hr>
 
-<?php endforeach; ?>
+<!-- ここからHTML -->
+<div class="container">
+
+    <h2><?= $message[0]['title'] ?></h2>
+    <hr>
+    <?php foreach ($replies as $replie): ?>
+
+        <p><?php if ($replie['sender_role'] === 'teacher'): ?>
+        <div class="date"><?= $replie['sender_name'] ?>の回答 : <?= $replie['created_at'] ?></div>
+        <?php else: ?>
+        <div class="date">あなたの質問 : <?= $replie['created_at'] ?></div>
+        <?php endif; ?>
+        </p>
+
+        <p class="indent"> <?= h($replie['body']) ?>
+        </p>
+        
+    <?php endforeach; ?>
+    <hr>
+</div>
+
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>

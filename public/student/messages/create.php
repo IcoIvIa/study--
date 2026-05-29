@@ -16,20 +16,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
     $title = $_POST['title'];
     $body  = $_POST['body'];
-    
+
     // 1. message_threadsにINSERT
     $messageThreads = $db->query(
-    "INSERT INTO message_threads (student_id, title) VALUES(? ,?)",
-    [$studentid , $title]
-);
+        "INSERT INTO message_threads (student_id, title) VALUES(? ,?)",
+        [$studentid, $title]
+    );
     // 3. message_repliesにINSERT
     $threadId = $db->lastInsertId();
 
     $messageReplies = $db->query(
-    "INSERT INTO message_replies (message_thread_id, sender_role, sender_id, body) VALUES(?, ?, ?, ?)",
-[$threadId, 'student', $studentid, $body]
+        "INSERT INTO message_replies (message_thread_id, sender_role, sender_id, body) VALUES(?, ?, ?, ?)",
+        [$threadId, 'student', $studentid, $body]
     );
-        header("Location: /student/messages/index.php");
+    header("Location: /student/dashboard.php");
     exit;
 }
 
@@ -39,12 +39,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 <!-- フォームのHTML -->
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 
-<form action="" method="post">
-    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-<input type="text" name="title" id="">
-<textarea name="body" id=""></textarea>
+<div class="container">
+    <form action="" method="post">
+        <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+        <h2 class="text-center">質問投稿フォーム</h2>
+        <hr>
+        <p>タイトルを入力してください</p>
+        
+        <input type="text" name="title">
+        
+        <p>本文を入力してください</p>
+        <textarea name="body" class="text-area"></textarea>
 
-<input type="submit" value="送信">
-</form>
+        <input class="mx-auto" type="submit" value="質問を投稿する">
+        <hr>
+    </form>
+</div>
 
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>

@@ -11,7 +11,7 @@
     --radius: 8px;
 }
 
-
+/* プロパティここから */
 a {
     color: inherit;
     text-decoration: none;
@@ -25,6 +25,31 @@ body {
     padding: var(--spacing-md);
 }
 
+button,
+input[type="submit"] {
+    background: var(--color-primary);
+    color: var(--color-white);
+    border: none;
+    padding: var(--spacing-md) var(--spacing-lg);
+    margin-top: var(--spacing-lg);
+    border-radius: var(--radius);
+    cursor: pointer;
+}
+
+input[type="text"],
+input[type="email"],
+input[type="password"],
+textarea {
+    width: 100%;
+    padding: var(--spacing-sm);
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    box-sizing: border-box;
+}
+/* プロパティここまで */
+
+
+/* クラスここから */
 .container {
     max-width: 960px;
     margin: 0 auto;
@@ -50,8 +75,17 @@ body {
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.15);
 }
 
+.card-sm {
+    max-width: 720px;
+    margin: var(--spacing-lg) auto;
+}
 .margin-bottom-zero {
     margin-bottom: 5px;
+}
+
+
+.margin-bottom {
+    margin-bottom: var(--spacing-lg);
 }
 
 .mx-auto {
@@ -88,26 +122,14 @@ body {
     overflow-y: auto;
 }
 
-button,
-input[type="submit"] {
-    background: var(--color-primary);
-    color: var(--color-white);
-    border: none;
-    padding: var(--spacing-md) var(--spacing-lg);
-    margin-top: var(--spacing-lg);
-    border-radius: var(--radius);
-    cursor: pointer;
-}
+.text-area {
 
-input[type="text"],
-input[type="email"],
-input[type="password"],
-textarea {
-    width: 100%;
-    padding: var(--spacing-sm);
-    border: 1px solid #ccc;
-    border-radius: var(--radius);
-    box-sizing: border-box;
+    min-height: 180px;
+    padding: 12px 14px;
+
+    font-size: 16px;
+    line-height: 1.6;
+    resize: vertical;
 }
 
 .date {
@@ -119,6 +141,7 @@ textarea {
 .tight {
     margin: 0;
 }
+
 
 .badge-correct {
     background: #2ECC71;
@@ -137,6 +160,7 @@ textarea {
     font-size: 0.8rem;
     display: inline-block;
 }
+/* クラスここまで */
 
 /* \public\teacher\dashboard.php の問題種別解答入力欄表示ロジック*/
 

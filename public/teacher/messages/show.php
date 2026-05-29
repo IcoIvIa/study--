@@ -27,10 +27,12 @@ $db->query(
 header("Location: /teacher/messages/show.php?id=" . $threadId);
 exit;
 }
+
 ?>
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 <!-- ここからHTML -->
+ 
  <?php foreach($replies as $replie): ?>
     <p> <?= h($replie['body']) ?></p>
     <hr>
