@@ -36,8 +36,6 @@ WHERE answers.question_id = ?",
 ?>
 
 
-// 3. その問題への全生徒の回答一覧を取得して表示
-
 <!-- フォームのHTML -->
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 

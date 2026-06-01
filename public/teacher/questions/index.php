@@ -16,28 +16,32 @@ $questions = $db->query(
     [$teacherId]
 );
 
-if(isset($_POST['action'])){
+if (isset($_POST['action'])) {
     csrf_verify();
     $id = $_POST['id'];
-$db->query(
-    "DELETE FROM questions WHERE id = ? AND teacher_id = ? ",
-    [$id ,$teacherId]
+    $db->query(
+        "DELETE FROM questions WHERE id = ? AND teacher_id = ? ",
+        [$id, $teacherId]
 
-);    header('Location: /teacher/questions/index.php');
-exit;}
+    );
+    header('Location: /teacher/questions/index.php');
+    exit;
+}
 ?>
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 <!-- ここからHTML -->
- <?php foreach($questions as $question): ?>
-    <p> <?= h($question['title']) ?></p>
+<?php foreach ($questions as $question): ?>
+    <a href="http://localhost:8080/teacher/questions/edit.php?id=<?= h($question['id']) ?>">
+        <p> <?= h($question['title']) ?></p>
+    </a>
 
     <form method="POST">
-    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-    <input type="hidden" name="id" value="<?= h($question['id']) ?>">
-    <button type="submit" name="action" value="delete">削除</button>
-    
-</form>
+        <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+        <input type="hidden" name="id" value="<?= h($question['id']) ?>">
+        <button type="submit" name="action" value="delete">削除</button>
+
+    </form>
 
 <?php endforeach; ?>
 

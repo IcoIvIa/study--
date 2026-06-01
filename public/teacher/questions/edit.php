@@ -11,7 +11,18 @@ $auth->requireRole('teacher');
 
 $teacherId = $_SESSION['user_id'];
 // 1. id を取得
-$id = $_GET['id'];
+if(isset($_GET['id']) && ctype_digit($_GET['id'])){
+    $id = $_GET['id'];
+} else {
+    header('Location: /teacher/questions/index.php');
+    exit;
+}
+
+function checked( string $question ,string $type) : string {
+    if($question === $type){ 
+    return 'checked';
+    } else return '';
+}
 // 2. DBから該当の問題を取得
 
 
@@ -25,8 +36,18 @@ if ($question === null) {
     header('Location: /teacher/questions/index.php');
     exit;
 }
-// 3. POST処理（UPDATE）
 
+if ($question['question_type'] === 'multiple_choice') {
+    $options = $db->query(
+        "SELECT * FROM question_options
+        WHERE question_id = ?
+        ORDER BY sort_order ASC",
+        [$id]
+    );
+}
+
+
+    // 3. POST処理（UPDATE）
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
 
@@ -65,9 +86,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 
 ?>
-// 4. フォーム表示（初期値あり）
-
-
 
 <!-- ここからHTML -->
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
@@ -84,30 +102,29 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <p>問題種別を選択</p>
     <label for="">
-        <input type="radio" name="question_type" value="multiple_choice" id="">
+        <input type="radio" name="question_type" value="multiple_choice" <?= checked($question['question_type'],'multiple_choice') ?>>
         <?php show_error($errors ?? [], 'question_type') ?>
 
         選択問題
     </label>
     <br>
     <label for="">
-        <input type="radio" name="question_type" value="short_answer" id="">
+        <input type="radio" name="question_type" value="short_answer" <?= checked($question['question_type'],'short_answer') ?>>
         記述問題
     </label>
     <br>
     <label for="">
-        <input type="radio" name="question_type" value="true_false" id="">
+        <input type="radio" name="question_type" value="true_false" <?= checked($question['question_type'],'true_false') ?>>
         正誤問題
     </label>
     <br>
 
     <p>回答を編集</p>
     <div id="answer-area">
-        <input type="text" name="multiple_choice_answer" id="" value="multiple_choice_answer_test message">
+        <input type="text" name="multiple_choice_answer" id="" value="multiple_choice_answer_test message" >
         <input type="text" name="short_answer_answer" id="" value="short_answer_answer_test message">
         <input type="text" name="true_false_answer" id="" value="true_false_answer_test message">
     </div>
-
 
 
     <p>解説を編集</p>

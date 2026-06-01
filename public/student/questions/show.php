@@ -82,7 +82,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         $_SESSION['result'] = [
             'is_correct'     => $isCorrect,
-            'correct_answer' => $question['correct_answer']
+            'correct_answer' => $question['correct_answer'],
         ];
 
         header('Location: /student/questions/show.php?category_id=' . $category_id . '&page=' . $page);
@@ -173,6 +173,9 @@ function handleAnswer(?string $correctText, array $question)
 
         <p>答え</p>
         <p><?= h(handleAnswer($correctText, $question)) ?></p>
+        <?php if ($question['explanation']): ?>
+        <p><?= h($question['explanation']) ?></p>
+        <?php endif; ?>
     <?php endif; ?>
 
     <div class="text-center">
