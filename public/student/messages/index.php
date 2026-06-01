@@ -34,6 +34,7 @@ ORDER BY message_replies.created_at DESC",
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 <!-- ここからHTML -->
 <div class="container">
+    <hr>
 
     <h2>あなたの質問一覧</h2>
     <hr>

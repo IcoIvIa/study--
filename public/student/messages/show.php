@@ -46,6 +46,11 @@ $replies = $db->query(
         </p>
         
     <?php endforeach; ?>
+
+    <div>
+        <a href="/student/messages/index.php">質問一覧に戻る</a>
+    </div>
+
     <hr>
 </div>
 

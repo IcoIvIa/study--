@@ -135,13 +135,20 @@ textarea {
 .date {
     font-size: 0.75rem;
     letter-spacing: -0.05em;
-    color: #616161;
+    color: var(--color-text)
+}
+
+.flex {
+    display: flex;
 }
 
 .tight {
     margin: 0;
 }
 
+.gray {
+    color: #CCCCCC;
+}
 
 .badge-correct {
     background: #2ECC71;
