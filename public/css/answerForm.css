@@ -1,0 +1,9 @@
+[name$="_answer"] {
+    display: none;
+}
+
+[data-answer-type="multiple_choice"] [name="multiple_choice_answer"],
+[data-answer-type="short_answer"] [name="short_answer_answer"],
+[data-answer-type="true_false"] [name="true_false_answer"] {
+    display: block;
+}

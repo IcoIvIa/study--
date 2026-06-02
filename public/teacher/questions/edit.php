@@ -105,6 +105,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <!-- ここからHTML -->
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
+<link rel="stylesheet" href="/css/answerForm.css">
 
 <form action="" method="POST">
 
@@ -147,7 +148,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     </select>
 
     <p>回答を編集</p>
-    <div id="answer-area">
+    <div id="answer-area" data-answer-type="<?= h($question['question_type']) ?>">
 
         <input type="text" name="short_answer_answer" id="" value="<?= h($question['correct_answer']) ?>">
         <input type="text" name="true_false_answer" id="" value="<?= h($question['correct_answer']) ?>">
@@ -175,19 +176,30 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 </form>
 
 <script>
-     'use strict';
-     const multipleChoice = document.querySelectorAll('');
-     // ラジオボタンの選択に応じて回答入力欄を切り替える
-     // 表示ロジックはCSSの[data-answer-type]セレクタにて（common.css参照）
-    //  const radios = document.querySelectorAll('input[name="question_type"]');
+    'use strict';
+    // ラジオボタンの選択に応じて回答入力欄を切り替える
+    // 表示ロジックはCSSの[data-answer-type]セレクタにて（answerForm.css参照）
+    const radios = document.querySelectorAll('input[name="question_type"]');
 
-    //  const answerArea = document.querySelector('#answer-area');
+    const answerArea = document.querySelector('#answer-area');
 
-    //  radios.forEach(radio => {
-    //       radio.addEventListener('change', () => {
-    //            answerArea.dataset.answerType = radio.value;
-    //       });
-    //  });
+    radios.forEach(radio => {
+        radio.addEventListener('change', () => {
+            answerArea.dataset.answerType = radio.value;
+        });
+    });
+
+    //  選択肢の追加
+
+    const addButton = document.querySelector('#add-option');
+    addButton.addEventListener('click', () => {
+        const currentCount = document.querySelectorAll('input[name^="options["]').length;
+        const div = document.createElement('div');
+        div.innerHTML = `<input type="text" name="options[${currentCount}][option_text]">
+        <input type="radio" name="correct_option" value="new_${currentCount}">
+        <input type="hidden" name="options[${currentCount}][id]" value="">`;
+        answerArea.appendChild(div);
+    });
 </script>
 
 <?php require_once __DIR__ . '/../../../templates/footer.php' ?>
