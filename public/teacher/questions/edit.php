@@ -11,16 +11,17 @@ $auth->requireRole('teacher');
 
 $teacherId = $_SESSION['user_id'];
 // 1. id を取得
-if(isset($_GET['id']) && ctype_digit($_GET['id'])){
+if (isset($_GET['id']) && ctype_digit($_GET['id'])) {
     $id = $_GET['id'];
 } else {
     header('Location: /teacher/questions/index.php');
     exit;
 }
 
-function checked( string $question ,string $type) : string {
-    if($question === $type){ 
-    return 'checked';
+function checked(string $question, string $type): string
+{
+    if ($question === $type) {
+        return 'checked';
     } else return '';
 }
 // 2. DBから該当の問題を取得
@@ -37,6 +38,9 @@ if ($question === null) {
     exit;
 }
 
+// HTMLで読み込むためここに記述
+$options = [];
+
 if ($question['question_type'] === 'multiple_choice') {
     $options = $db->query(
         "SELECT * FROM question_options
@@ -46,8 +50,12 @@ if ($question['question_type'] === 'multiple_choice') {
     );
 }
 
+$categories = $db->query(
+    "SELECT * FROM categories ORDER BY sort_order ASC"
+);
 
-    // 3. POST処理（UPDATE）
+
+// 3. POST処理（UPDATE）
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
 
@@ -71,13 +79,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         };
 
 
-
-
         $explanation   = $_POST['explanation'];
 
+        $categoryId =  $_POST['category_id'] !== '' ? $_POST['category_id'] : null;
+
         $questions = $db->query(
-            "UPDATE  questions SET  title = ? , content = ? , question_type = ? , correct_answer = ? , explanation = ? WHERE id = ? ",
-            [$title, $content, $questionType, $correctAnswer, $explanation, $id]
+            "UPDATE  questions SET  title = ? , content = ? , question_type = ? , correct_answer = ? , explanation = ? , category_id = ? WHERE id = ?",
+            [
+                $title,
+                $content,
+                $questionType,
+                $correctAnswer,
+                $explanation,
+                $categoryId,
+                $id
+            ]
         );
         flash_set('問題を更新しました');
         header('Location: /teacher/questions/index.php');
@@ -102,28 +118,51 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <p>問題種別を選択</p>
     <label for="">
-        <input type="radio" name="question_type" value="multiple_choice" <?= checked($question['question_type'],'multiple_choice') ?>>
+        <input type="radio" name="question_type" value="multiple_choice" <?= checked($question['question_type'], 'multiple_choice') ?>>
         <?php show_error($errors ?? [], 'question_type') ?>
 
         選択問題
     </label>
     <br>
     <label for="">
-        <input type="radio" name="question_type" value="short_answer" <?= checked($question['question_type'],'short_answer') ?>>
+        <input type="radio" name="question_type" value="short_answer" <?= checked($question['question_type'], 'short_answer') ?>>
         記述問題
     </label>
     <br>
     <label for="">
-        <input type="radio" name="question_type" value="true_false" <?= checked($question['question_type'],'true_false') ?>>
+        <input type="radio" name="question_type" value="true_false" <?= checked($question['question_type'], 'true_false') ?>>
         正誤問題
     </label>
     <br>
 
+    <select name="category_id">
+        <option value="">未選択</option>
+        <?php foreach ($categories as $category) : ?>
+            <option value="<?= h($category['id']) ?>"
+                <?= ($question['category_id'] === (string)$category['id']) ? 'selected' : '' ?>>
+                <?= h($category['name']) ?>
+            </option>
+        <?php endforeach; ?>
+
+    </select>
+
     <p>回答を編集</p>
     <div id="answer-area">
-        <input type="text" name="multiple_choice_answer" id="" value="multiple_choice_answer_test message" >
-        <input type="text" name="short_answer_answer" id="" value="short_answer_answer_test message">
-        <input type="text" name="true_false_answer" id="" value="true_false_answer_test message">
+
+        <input type="text" name="short_answer_answer" id="" value="<?= h($question['correct_answer']) ?>">
+        <input type="text" name="true_false_answer" id="" value="<?= h($question['correct_answer']) ?>">
+
+        <?php if (isset($options)): ?>
+            <?php foreach ($options as $index => $option) : ?>
+                <input type="text" name="options[<?= $index ?>][option_text]" value="<?= h($option['option_text']) ?>">
+                <input type="radio" name="correct_option" value="<?= h($option['id']) ?>" <?= $option['is_correct'] ? 'checked' : '' ?>>
+                <input type="hidden" name="options[<?= $index ?>][id]" value="<?= h($option['id']) ?>">
+
+            <?php endforeach; ?>
+            <button type="button" id="add-option">選択肢を追加</button>
+        <?php endif; ?>
+
+
     </div>
 
 
@@ -134,5 +173,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
 </form>
+
+<script>
+     'use strict';
+     const multipleChoice = document.querySelectorAll('');
+     // ラジオボタンの選択に応じて回答入力欄を切り替える
+     // 表示ロジックはCSSの[data-answer-type]セレクタにて（common.css参照）
+    //  const radios = document.querySelectorAll('input[name="question_type"]');
+
+    //  const answerArea = document.querySelector('#answer-area');
+
+    //  radios.forEach(radio => {
+    //       radio.addEventListener('change', () => {
+    //            answerArea.dataset.answerType = radio.value;
+    //       });
+    //  });
+</script>
 
 <?php require_once __DIR__ . '/../../../templates/footer.php' ?>

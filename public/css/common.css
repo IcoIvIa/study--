@@ -169,7 +169,7 @@ textarea {
 }
 /* クラスここまで */
 
-/* \public\teacher\dashboard.php の問題種別解答入力欄表示ロジック*/
+/* \public\teacher\questions\create.php の問題種別解答入力欄表示ロジック*/
 
 [name$="_answer"] {
     display: none;
