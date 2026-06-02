@@ -15,6 +15,7 @@ $message = $db->query(
     [$threadId]
 );
 
+
 $replies = $db->query(
     "SELECT 
     message_replies.*, 

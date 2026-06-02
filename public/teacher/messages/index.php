@@ -10,17 +10,39 @@ $auth->requireRole('teacher');
 
 
 $messages = $db->query(
-    "SELECT * FROM message_threads "
+    "SELECT message_threads.*, users.name
+     FROM message_threads
+     INNER JOIN users
+        ON message_threads.student_id = users.id"
 );
 
 ?>
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 <!-- ここからHTML -->
- <?php foreach($messages as $message): ?>
-    <p> <?= h($message['title']) ?></p>
+<table border="1">
+    <tr>
+        <th>タイトル</th>
+        <th>生徒名</th>
+        <th>質問日</th>
+        <th></th>
+    </tr>
+    <?php foreach ($messages as $message): ?>
+        <tr>
+            <td>
+                <p> <?= h($message['title']) ?></p>
+            </td>
+            <td>
+                <p> <?= h($message['name']) ?> </p>
+            </td>
+            <td>
+                <p> <?= h($message['created_at']) ?></p>
+            </td>
+            <td>
+                <a href="/teacher/messages/show.php?id=<?= h($message['id']) ?>">見る</a>
+            </td>
+        </tr>
+    <?php endforeach; ?>
+</table>
 
-<a href="/teacher/messages/show.php?id=<?= h($message['id']) ?>">見る</a>
-
-<?php endforeach; ?>
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>
