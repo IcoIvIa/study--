@@ -24,17 +24,6 @@ $questions = $db->query(
     [$teacherId]
 );
 
-if (isset($_POST['action'])) {
-    csrf_verify();
-    $id = $_POST['delete_id'];
-    $db->query(
-        "DELETE FROM questions WHERE id = ? AND teacher_id = ? ",
-        [$id, $teacherId]
-
-    );
-    header('Location: /teacher/questions/index.php');
-    exit;
-}
 ?>
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
@@ -45,7 +34,6 @@ if (isset($_POST['action'])) {
     <table border="1">
         <th>単元名<br><label class="date">クリックすると編集画面に飛びます</label></th>
         <th>概要</th>
-        <th>削除する</th>
         <?php foreach ($categories as $category): ?>
             <tr>
                 <td>
@@ -57,13 +45,9 @@ if (isset($_POST['action'])) {
                     <p> <?= h($category['description']) ?></p>
                 </td>
 
-                <td>
-                    <input type="checkbox" name="delete_id" value=" <?= h($category['id']) ?>">
-                </td>
             </tr>
         <?php endforeach; ?>
     </table>
 
-    <button type="submit" name="action" value="delete">削除</button>
 </form>
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>

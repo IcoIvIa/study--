@@ -82,6 +82,14 @@ $pageTitle = '先生ページ|study!!';
 <hr>
 
     <div>
+        <h2>単元管理</h2>
+        <ul>
+            <li><a href="/teacher/categories/index.php">単元一覧</a></li>
+            <li><a href="/teacher/categories/create.php">単元新規作成</a></li>
+        </ul>
+    </div>
+
+    <div>
         <h2>問題管理</h2>
         <ul>
             <li><a href="/teacher/questions/index.php">問題一覧</a></li>
