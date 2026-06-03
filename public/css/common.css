@@ -17,6 +17,10 @@ a {
     text-decoration: none;
 }
 
+a:hover {
+    color: var(--color-primary);
+}
+
 body {
     font-family: system-ui, sans-serif;
     background: var(--color-bg);
