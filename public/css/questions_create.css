@@ -1,0 +1,18 @@
+/* \public\teacher\questions\create.php の問題種別解答入力欄表示ロジック*/
+
+[name$="_answer"] ,
+#options-area {
+    display: none;
+}
+
+[data-answer-type="multiple_choice"] #options-area,
+[data-answer-type="short_answer"] [name="short_answer_answer"],
+[data-answer-type="true_false"] [name="true_false_answer"] {
+    display: block;
+}
+
+/* 軽微なデザイン調整 */
+#deleteButton {
+    margin-top: 0;
+    background: var(--color-error);
+}
