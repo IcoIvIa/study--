@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      $title         = $_POST['title'];
      $categoryId    = $_POST['category_id'];
      $content       = $_POST['content'];
-     $questionType  = $_POST['question_type'];
+     $questionType  = $_POST['question_type'] ?? '';
 
      $validator = new Validator($_POST);
      $validator->required('title', 'タイトル');
@@ -50,9 +50,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
           $explanation   = $_POST['explanation'];
           // 問題種別に応じて正解を取得（multiple_choiceはquestion_optionsで管理）
           $correctAnswer = match ($questionType) {
-               'short_answer'    => $_POST['short_answer_answer'],
-               'true_false'      => $_POST['true_false_answer'],
+               'short_answer'    => $_POST['short_answer_answer'] ?? '',
+               'true_false'      => $_POST['true_false_answer'] ?? '',
                'multiple_choice' => null,
+               default           => null,
           };
 
           $questions = $db->execute(
@@ -163,7 +164,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <h4>解説を入力</h4>
      <textarea name="explanation" id="" cols="30" rows="10"></textarea>
 
+     <hr>
+
+     <div class="text-center">
      <input type="submit" value="登録">
+     </div>
 
 </form>
 
@@ -188,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <tr>
             <td><input type="text" name="options[${id}][text]" placeholder="選択肢を入力"></td>
             <td><input type="radio" name="correct_option" value="${id}">正解</td>
-            <td><button type="button" id="deleteButton" onclick="this.closest('tr').remove()">削除</button></td>
+            <td><button type="button" class="delete_button" onclick="this.closest('tr').remove()">削除</button></td>
         </tr>
     `);
           id++;

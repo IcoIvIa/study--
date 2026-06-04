@@ -12,7 +12,7 @@
 }
 
 /* 軽微なデザイン調整 */
-#deleteButton {
+.delete_button {
     margin-top: 0;
     background: var(--color-error);
 }
