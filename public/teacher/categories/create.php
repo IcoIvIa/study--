@@ -69,5 +69,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     <input type="submit" value="登録">
 
+    <hr>
+    <a href="/teacher/dashboard.php"><h4>ダッシュボードに戻る</h4></a>
+    <hr>
+
 </form>
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>

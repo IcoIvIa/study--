@@ -19,35 +19,56 @@ $categories = $db->query(
     [$teacherId]
 );
 
-$questions = $db->query(
-    "SELECT * FROM questions WHERE teacher_id = ?",
-    [$teacherId]
-);
+// $questions = $db->query(
+//     "SELECT * FROM questions WHERE teacher_id = ?",
+//     [$teacherId]
+// );
 
 ?>
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 <!-- ここからHTML -->
-<form method="POST">
+<!-- <form method="POST"> -->
 
-    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
+    <!-- <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>"> -->
     <table border="1">
-        <th>単元名<br><label class="date">クリックすると編集画面に飛びます</label></th>
-        <th>概要</th>
+        <tr>
+            <th>単元名</th>
+            <th>概要</th>
+            <th>単元内の問題一覧を見る</th>
+            <th>単元内の問題を編集する<br><label class="date">編集画面に飛びます</label></th>
+        </tr>
         <?php foreach ($categories as $category): ?>
             <tr>
                 <td>
-                    <a href="/teacher/questions/edit.php?category_id=<?= $category['id'] ?>">
-                        <p> <?= h($category['name']) ?></p>
-                    </a>
+                    <p> <?= h($category['name']) ?></p>
                 </td>
                 <td>
                     <p> <?= h($category['description']) ?></p>
                 </td>
 
+                <td>
+                <a href="/teacher/questions/questions.php?category_id=<?= h($category['id']) ?>">
+                    クリックでジャンプします
+                </a>
+                </td>
+
+                <td>
+                <a href="/teacher/questions/edit.php?category_id=<?= h($category['id']) ?>">
+                    クリックでジャンプします
+                </a>
+                </td>
+
+
             </tr>
         <?php endforeach; ?>
     </table>
 
-</form>
+<!-- </form> -->
+
+<hr>
+<a href="/teacher/dashboard.php">
+    <h4>ダッシュボードに戻る</h4>
+</a>
+<hr>
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>

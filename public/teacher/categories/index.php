@@ -72,6 +72,10 @@ if (isset($_POST['action'])) {
     <button type="submit" name="action" value="delete">削除</button>
 </form>
 
+    <hr>
+    <a href="/teacher/dashboard.php"><h4>ダッシュボードに戻る</h4></a>
+    <hr>
+    
 <script>
     'use strict';
 

@@ -101,4 +101,7 @@ $categories = $db->query(
 
 </form>
 
+    <hr>
+    <a href="/teacher/dashboard.php"><h4>ダッシュボードに戻る</h4></a>
+    <hr>
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>

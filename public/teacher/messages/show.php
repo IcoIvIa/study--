@@ -41,7 +41,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 <!-- ここからHTML -->
- <hr>
+<hr>
 <h3><?= $message[0]['title'] ?></h3>
 <table border="1">
     <tr>
@@ -72,5 +72,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <textarea name="repliesText" id=""></textarea>
     <button type="submit">返信</button>
 </form>
-
+<hr>
+<a href="/teacher/dashboard.php">
+    <h4>ダッシュボードに戻る</h4>
+</a>
+<hr>
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>

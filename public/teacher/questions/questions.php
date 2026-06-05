@@ -68,6 +68,8 @@ $questions = $db->query(
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 
+<hr>
+
 <form action="" method="POST">
 
     <?php foreach ($questions as $question): ?>
@@ -78,26 +80,20 @@ $questions = $db->query(
                 <td colspan="2">
                     <p>問題ID: <?= $question['id'] ?></p>
                 </td>
+                <td>
+                    生徒の回答一覧
+                </td>
             </tr>
 
             <tr>
                 <td>タイトル</td>
-                <td>
-                    <input
-                        type="text"
-                        name="questions[<?= $question['id'] ?>][title]"
-                        value="<?= h($question['title']) ?>">
-                </td>
+                <td><?= h($question['title']) ?></td>
+                <td rowspan="4"><a href="/teacher/questions/answers.php?id=<?= h($question['id']) ?>">見る</a></td>
             </tr>
 
             <tr>
                 <td>問題内容</td>
-                <td>
-                    <textarea
-                        name="questions[<?= $question['id'] ?>][content]"
-                        cols="50"
-                        rows="5"><?= h($question['content']) ?></textarea>
-                </td>
+                <td><?= h($question['content']) ?></td>
             </tr>
 
             <tr>
@@ -116,7 +112,6 @@ $questions = $db->query(
                     <label>
                         <input
                             type="radio"
-                            name="questions[<?= $question['id'] ?>][question_type]"
                             value="short_answer"
                             <?= checked($question['question_type'], 'short_answer') ?>>
                         記述問題
@@ -125,7 +120,6 @@ $questions = $db->query(
                     <label>
                         <input
                             type="radio"
-                            name="questions[<?= $question['id'] ?>][question_type]"
                             value="true_false"
                             <?= checked($question['question_type'], 'true_false') ?>>
                         正誤問題
@@ -136,12 +130,7 @@ $questions = $db->query(
 
             <tr>
                 <td>解説</td>
-                <td>
-                    <textarea
-                        name="questions[<?= $question['id'] ?>][explanation]"
-                        cols="50"
-                        rows="5"><?= h($question['explanation']) ?></textarea>
-                </td>
+                <td><?= h($question['explanation']) ?></td>
             </tr>
 
         </table>
@@ -151,14 +140,10 @@ $questions = $db->query(
 
     <?php endforeach; ?>
 
-    <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
-
-    <input type="submit" value="一括更新">
-
 </form>
-        <hr>
-        <a href="/teacher/dashboard.php">
-            <h4>ダッシュボードに戻る</h4>
-        </a>
-        <hr>
+<hr>
+<a href="/teacher/dashboard.php">
+    <h4>ダッシュボードに戻る</h4>
+</a>
+<hr>
 <?php require_once __DIR__ . '/../../../templates/footer.php'; ?>

@@ -167,10 +167,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <hr>
 
      <div class="text-center">
-     <input type="submit" value="登録">
+          <input type="submit" value="登録">
      </div>
 
 </form>
+
+<hr>
+<a href="/teacher/dashboard.php">
+     <h4>ダッシュボードに戻る</h4>
+</a>
+<hr>
 
 <script>
      'use strict';
