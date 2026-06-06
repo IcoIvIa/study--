@@ -36,6 +36,11 @@ ORDER BY message_replies.created_at DESC",
 <div class="container">
     <hr>
 
+    <?php $flash = flash_get(); ?>
+    <?php if ($flash): ?>
+        <p><?= h($flash['message']) ?></p>
+    <?php endif; ?>
+
     <h2>あなたの質問一覧</h2>
     <hr>
     <?php foreach ($messages as $message): ?>
@@ -45,7 +50,7 @@ ORDER BY message_replies.created_at DESC",
                 <h4 class="tight">
                     <?= h($message['title']) ?>
                     <label class="date">
-                        <?= " : ".$message['created_at'] ?>
+                        <?= " : " . h($message['created_at']) ?>
                     </label>
                 </h4>
 
