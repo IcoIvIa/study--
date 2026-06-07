@@ -6,12 +6,11 @@ require_once __DIR__ . '/../../src/Auth.php';
 require_once __DIR__ . '/../../src/helpers.php';
 require_once __DIR__ . '/../../src/Database.php';
 
-$db = new Database();
 $auth = new Auth();
-
 $auth->requireRole('student');
 
-$studentId = $_SESSION['user_id'];
+$db = new Database();
+$student_id = $_SESSION['user_id'];
 
 // 履歴（最新5件
 $questions = $db->query(
@@ -25,7 +24,7 @@ $messages = $db->query(
     WHERE student_id = ?
     ORDER BY id DESC
     LIMIT 5",
-    [$studentId]
+    [$student_id]
 );
 
 $recentAnswers = $db->query(
@@ -35,7 +34,7 @@ $recentAnswers = $db->query(
     WHERE answers.student_id = ?
     ORDER BY answers.created_at DESC
     LIMIT 5",
-    [$studentId]
+    [$student_id]
 );
 // 正答率
 $stats = $db->query(
@@ -44,7 +43,7 @@ $stats = $db->query(
         SUM(is_correct) as correct
     FROM answers
     WHERE student_id = ?",
-    [$studentId]
+    [$student_id]
 )[0];
 
 // 未回答の問題
@@ -53,7 +52,7 @@ $unansweredQuestions = $db->query(
     WHERE id NOT IN (
         SELECT question_id FROM answers WHERE student_id = ?
     )",
-    [$studentId]
+    [$student_id]
 );
 
 
@@ -61,7 +60,7 @@ $rate = $stats['total'] > 0
     ? round($stats['correct'] / $stats['total'] * 100)
     : 0;
 
-$pageTitle = '生徒ページ|study!!';
+$pageTitle = '生徒ページダッシュボード||study!!';
 ?>
 
 <?php require_once __DIR__ . '/../../templates/header.php'; ?>
@@ -77,7 +76,7 @@ $pageTitle = '生徒ページ|study!!';
         <div>
             <br>
             <p class="indent">総回答数：<span class="size-l"><?= $stats['total'] ?></span></p>
-            <p class="indent">正答率：<span class="size-l"><?= $rate ?></span></p>
+            <p class="indent">正答率：<span class="size-l"><?= $rate ?></span>%</p>
         </div>
 
         <div>
@@ -128,6 +127,5 @@ $pageTitle = '生徒ページ|study!!';
 </div>
 
 <hr>
-</div>
 
 <?php require_once __DIR__ . '/../../templates/footer.php'; ?>

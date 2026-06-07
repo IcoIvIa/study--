@@ -12,6 +12,7 @@ $auth = new Auth();
 $auth->requireRole('student');
 $student_id = $_SESSION['user_id'];
 
+$pageTitle = "質問ページ||study!!";
 $errors = [];
 $title = '';
 $body  = '';

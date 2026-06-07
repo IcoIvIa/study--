@@ -5,16 +5,15 @@ require_once __DIR__ . '/../../../src/helpers.php';
 require_once __DIR__ . '/../../../src/Database.php';
 require_once __DIR__ . '/../../../src/Validator.php';
 
-$db = new Database();
 $auth = new Auth();
-
-
 $auth->requireRole('student');
 
-$category_id = $_GET['category_id'];
-$page        = (int)$_GET['page'];
+$db = new Database();
+$category_id = $_GET['category_id'] ?? null;
+$page        = (int)($_GET['page'] ?? 1);
 
-
+$errors = [];
+$pageTitle = "問題ページ||study!!";
 
 $questions = $db->query(
     "SELECT * FROM questions WHERE category_id = ?",
@@ -58,26 +57,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         exit;
     } 
 
-        $answer = $_POST['answer'];
+        $userAnswer = $_POST['answer'];
 
         // 正誤判定（問題種別で分岐）
         if ($question['question_type'] === 'multiple_choice') {
             foreach ($options as $option) {
-                if ($option['id'] == $answer) {
+                if ($option['id'] == $userAnswer) {
                     $isCorrect = $option['is_correct'];
                     break;
                 }
             }
         } else {
 
-            $isCorrect = ($answer === $question['correct_answer']) ? 1 : 0;
+            $isCorrect = ($userAnswer === $question['correct_answer']) ? 1 : 0;
             $correctText = $question['correct_answer'];
         }
 
         // answersテーブルにINSERT
-        $db->query(
+        $db->execute(
             "INSERT INTO answers(question_id, student_id, answer_text, is_correct) VALUES ( ? , ? , ? , ?)",
-            [$question['id'], $_SESSION['user_id'], $answer, $isCorrect]
+            [$question['id'], $_SESSION['user_id'], $userAnswer, $isCorrect]
         );
 
         $_SESSION['result'] = [
@@ -153,9 +152,9 @@ function handleAnswer(?string $correctText, array $question)
         <input type="text" name="answer">
 
     <?php elseif ($question['question_type'] === 'true_false'): ?>
-        <input type="radio" name="answer" value="true">
+        <input type="radio" name="answer" value="true" id="true">
         <label for="true">正しい</label>
-        <input type="radio" name="answer" value="false">
+        <input type="radio" name="answer" value="false" id="false">
         <label for="false">誤り</label>
 
     <?php elseif ($question['question_type'] === 'multiple_choice'): ?>

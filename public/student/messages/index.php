@@ -4,10 +4,13 @@ require_once __DIR__ . '/../../../src/Auth.php';
 require_once __DIR__ . '/../../../src/helpers.php';
 require_once __DIR__ . '/../../../src/Database.php';
 
-$db = new Database();
 $auth = new Auth();
-$id = $_SESSION['user_id'];
 $auth->requireRole('student');
+
+$db = new Database();
+$student_id = $_SESSION['user_id'];
+
+$pageTitle = "質問ページ||study!!";
 
 $messages = $db->query(
     "SELECT 
@@ -17,16 +20,16 @@ $messages = $db->query(
         message_replies.created_at
     FROM message_threads
     JOIN message_replies 
-        ON message_threads.id = message_replies.message_thread_id
+    ON message_threads.id = message_replies.message_thread_id
     WHERE message_replies.id = (
-        SELECT MIN(id) 
+    SELECT MIN(id) 
     FROM message_replies 
-        WHERE message_thread_id = message_threads.id
+    WHERE message_thread_id = message_threads.id
         
     )
 AND student_id = ?
 ORDER BY message_replies.created_at DESC",
-    [$id]
+    [$student_id]
 );
 
 ?>
