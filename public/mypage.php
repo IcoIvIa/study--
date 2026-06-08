@@ -6,12 +6,14 @@ require_once __DIR__ . '/../src/helpers.php';
 require_once __DIR__ . '/../src/Database.php';
 require_once __DIR__ . '/../src/Validator.php';
 
-$db = new Database();
-$auth = new Auth();
 
+$auth = new Auth();
+$auth->requireLogin();
+
+$db = new Database();
 $id = $_SESSION['user_id'];
 
-$auth->requireLogin();
+
 
 $user = $db->query(
     "SELECT * FROM users WHERE id = ? ",

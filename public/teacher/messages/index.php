@@ -4,10 +4,11 @@ require_once __DIR__ . '/../../../src/Auth.php';
 require_once __DIR__ . '/../../../src/helpers.php';
 require_once __DIR__ . '/../../../src/Database.php';
 
-$db = new Database();
+
 $auth = new Auth();
 $auth->requireRole('teacher');
 
+$db = new Database();
 
 $messages = $db->query(
     "SELECT message_threads.*, users.name

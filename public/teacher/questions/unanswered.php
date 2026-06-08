@@ -6,11 +6,11 @@ require_once __DIR__ . '/../../../src/helpers.php';
 require_once __DIR__ . '/../../../src/Database.php';
 require_once __DIR__ . '/../../../src/Validator.php';
 
-$db = new Database();
+
 $auth = new Auth();
-
-
 $auth->requireRole('teacher');
+
+$db = new Database();
 
 $categoryId = $_GET['category_id'];
 $categories = $db->query(
