@@ -39,6 +39,7 @@ $pageTitle = '先生ページ|study!!';
 <?php require_once __DIR__ . '/../../templates/header.php'; ?>
 
 <hr>
+<h2>質問</h2>
 
 <!-- ダッシュボードの中身 -->
 <table border="1">
@@ -55,13 +56,14 @@ $pageTitle = '先生ページ|study!!';
     </tr>
 </table>
 <div>
-    <h2>質問管理</h2>
+    <h4>質問管理</h4>
     <ul>
         <li><a href="/teacher/messages/index.php">質問一覧</a></li>
     </ul>
 </div>
 
 <hr>
+<h2>問題</h2>
 
 <table border="1">
     <tr>
@@ -99,7 +101,7 @@ $pageTitle = '先生ページ|study!!';
 
 
 <div>
-    <h2>単元管理</h2>
+    <h4>単元管理</h4>
     <ul>
         <li><a href="/teacher/categories/index.php">単元一覧</a></li>
         <li><a href="/teacher/categories/create.php">単元新規作成</a></li>
@@ -107,7 +109,7 @@ $pageTitle = '先生ページ|study!!';
 </div>
 
 <div>
-    <h2>問題管理</h2>
+    <h4>問題管理</h4>
     <ul>
         <li><a href="/teacher/questions/index.php">問題一覧</a></li>
         <li><a href="/teacher/questions/create.php">問題新規作成</a></li>
@@ -115,7 +117,7 @@ $pageTitle = '先生ページ|study!!';
 </div>
 
 <div>
-    <h2>テスト解答管理(テスト用削除)</h2>
+    <h4>テスト解答管理(テスト用削除)</h4>
     <ul>
 
         <li><a href="/teacher/questions/answers.php?id=3">回答一覧（id=1）</a></li>

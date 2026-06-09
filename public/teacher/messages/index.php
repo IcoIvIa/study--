@@ -29,6 +29,7 @@ $messages = $db->query(
         <th></th>
     </tr>
     <?php foreach ($messages as $message): ?>
+
         <tr>
             <td>
                 <p> <?= h($message['title']) ?></p>
