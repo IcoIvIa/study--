@@ -69,22 +69,27 @@ $pageTitle = "ログインページ|study!!";
     <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>">
 
     <div class="container">
-    <h1 class="text-center">ログイン</h1>
-    <hr>
-    <br>
-    <p>メールアドレス</p>
-    <input type="email" name="email" id="">
-    <?php show_error($errors ?? [] , 'email') ?>
-    <br>
-    <p>パスワード</p>
-    <input type="password" name="password" >
-    <?php show_error($errors ?? [] , 'password') ?>
-    
+        <h1 class="text-center">ログイン</h1>
+        <hr>
+        <br>
+        <p>メールアドレス</p>
+        <input type="email" name="email" id="">
+        <?php show_error($errors ?? [], 'email') ?>
+        <br>
+        <p>パスワード</p>
+        <input type="password" name="password">
+        <?php show_error($errors ?? [], 'password') ?>
 
-    <br>
-    <input type="submit" value="ログイン" class="mx-auto">
-    <hr>
+
+        <br>
+        <input type="submit" value="ログイン" class="mx-auto">
+
+        <h3 class="text-center">または</h3>
+        <div class="text-center">
+            <button type="button" onclick="location.href='./register.php'">新規登録</button>
+        </div>
     </div>
+    <hr>
 </form>
 
 <?php require_once __DIR__ . '/../templates/footer.php'; ?>

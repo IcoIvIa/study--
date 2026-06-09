@@ -116,13 +116,13 @@ $pageTitle = '先生ページ|study!!';
     </ul>
 </div>
 
-<div>
+<!-- <div>
     <h4>テスト解答管理(テスト用削除)</h4>
     <ul>
 
-        <li><a href="/teacher/questions/answers.php?id=3">回答一覧（id=1）</a></li>
+        <li><a href="/teacher/questions/answers.php?id=3">回答一覧</a></li>
     </ul>
-</div>
+</div> -->
 
 
 <hr>
