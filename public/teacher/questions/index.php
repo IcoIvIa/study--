@@ -18,18 +18,11 @@ $categories = $db->query(
     [$teacherId]
 );
 
-// $questions = $db->query(
-//     "SELECT * FROM questions WHERE teacher_id = ?",
-//     [$teacherId]
-// );
-
 ?>
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 <!-- ここからHTML -->
-<!-- <form method="POST"> -->
 
-    <!-- <input type="hidden" name="csrf_token" value="<?= csrf_token() ?>"> -->
     <table border="1">
         <tr>
             <th>単元名</th>

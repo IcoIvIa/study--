@@ -4,15 +4,13 @@ session_start();
 require_once __DIR__ . '/../../../src/Auth.php';
 require_once __DIR__ . '/../../../src/helpers.php';
 require_once __DIR__ . '/../../../src/Database.php';
-require_once __DIR__ . '/../../../src/Validator.php';
-
 
 $auth = new Auth();
 $auth->requireRole('teacher');
 
 $db = new Database();
 
-$categoryId = $_GET['category_id'];
+$categoryId = $_GET['category_id'] ?? null;
 $categories = $db->query(
     "SELECT name FROM categories WHERE id = ?",
     [$categoryId]

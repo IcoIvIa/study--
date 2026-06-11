@@ -27,12 +27,11 @@ if ($question === null) {
     exit;
 }
 
-
 $answers = $db->query(
     "SELECT answers.*, users.name 
-FROM answers 
-JOIN users ON answers.student_id = users.id
-WHERE answers.question_id = ?",
+    FROM answers 
+    JOIN users ON answers.student_id = users.id
+    WHERE answers.question_id = ?",
     [$questionId]
 );
 ?>
@@ -46,11 +45,14 @@ WHERE answers.question_id = ?",
 <hr>
 
 <table border="1">
+    <?php if(!isset($answers)) : ?>
     <tr>
     <th>回答者</th>
     <th>回答</th>
     <th>結果</th>
     </tr>
+    
+
     <?php foreach ($answers as $answer) : ?>
         <tr>
 
@@ -61,11 +63,15 @@ WHERE answers.question_id = ?",
                 <p><?= h($answer['answer_text']) ?></p>
             </td>
             <td>
-                <p><?= $answer['is_correct'] ? '正解' : '不正解' ?></p>
+                <p><?= h($answer['is_correct']) ? '正解' : '不正解' ?></p>
             </td>
         </tr>
     <?php endforeach; ?>
 </table>
+<?php else :?>
+    <p>回答者なし</p>
+<?php endif; ?>
+
 <hr>
 <a href="/teacher/dashboard.php">
     <h4>ダッシュボードに戻る</h4>

@@ -19,6 +19,11 @@ $db = new Database();
 
 $teacherId = $_SESSION['user_id'];
 
+$extraCss = '/css/questions_create.css';
+$errors = [];
+$title    = '';
+$content  = '';
+$explanation = '';
 
 $categories = $db->query(
      "SELECT * FROM categories"
@@ -27,10 +32,10 @@ $categories = $db->query(
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      csrf_verify();
 
-     $title         = $_POST['title'];
-     $categoryId    = $_POST['category_id'];
-     $content       = $_POST['content'];
-     $questionType  = $_POST['question_type'] ?? '';
+     $title         = trim($_POST['title'] ?? "");
+     $categoryId    = trim($_POST['category_id'] ?? "");
+     $content       = trim($_POST['content'] ?? "");
+     $questionType  = trim($_POST['question_type'] ?? '') ;
 
      $validator = new Validator($_POST);
      $validator->required('title', 'タイトル');
@@ -57,7 +62,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                default           => null,
           };
 
-          $questions = $db->execute(
+          $db->execute(
                "INSERT INTO questions (teacher_id , category_id , title , content, question_type, correct_answer, explanation) VALUES (? , ? , ? , ? , ? , ? , ?)",
                [$teacherId, $categoryId, $title, $content, $questionType, $correctAnswer, $explanation]
           );
@@ -83,7 +88,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <?php require_once __DIR__ . '/../../../templates/header.php'; ?>
 
-<link rel="stylesheet" href="../../../css/questions_create.css">
+<!-- <link rel="stylesheet" href="../../../css/questions_create.css"> -->
 
 <!-- フォームのHTML -->
 <form method="POST" id="">
@@ -100,13 +105,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      </select>
      <hr>
      <h4>タイトルを入力</h4>
-     <input type="text" name="title" id="">
+     <input type="text" name="title" value="<?= h($title) ?>">
      <?php show_error($errors ?? [], 'title') ?>
 
      <hr>
 
      <h4>問題の内容を入力</h4>
-     <textarea name="content" id="" cols="30" rows="10"></textarea>
+     <textarea name="content"  cols="30" rows="10"><?= h($content) ?></textarea>
      <?php show_error($errors ?? [], 'content') ?>
 
      <hr>
@@ -163,7 +168,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      <hr>
 
      <h4>解説を入力</h4>
-     <textarea name="explanation" id="" cols="30" rows="10"></textarea>
+     <textarea name="explanation" id="" cols="30" rows="10"><?= h($explanation) ?></textarea>
 
      <hr>
 

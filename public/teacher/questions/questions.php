@@ -4,8 +4,6 @@ session_start();
 require_once __DIR__ . '/../../../src/Auth.php';
 require_once __DIR__ . '/../../../src/helpers.php';
 require_once __DIR__ . '/../../../src/Database.php';
-require_once __DIR__ . '/../../../src/Validator.php';
-
 
 $auth = new Auth();
 $auth->requireRole('teacher');
@@ -16,35 +14,6 @@ $teacherId = $_SESSION['user_id'];
 function checked(string $question, string $type): string
 {
     return $question === $type ? 'checked' : '';
-}
-
-if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-
-    csrf_verify();
-
-    foreach ($_POST['questions'] as $id => $question) {
-
-        $db->execute(
-            "UPDATE questions
-             SET title = ?,
-                 content = ?,
-                 question_type = ?,
-                 explanation = ?
-             WHERE id = ?",
-            [
-                $question['title'],
-                $question['content'],
-                $question['question_type'],
-                $question['explanation'],
-                $id
-            ]
-        );
-    }
-
-    flash_set('問題を更新しました');
-
-    header('Location: /teacher/questions/index.php');
-    exit;
 }
 
 $categoryId = filter_input(INPUT_GET, 'category_id', FILTER_VALIDATE_INT);
@@ -70,15 +39,13 @@ $questions = $db->query(
 
 <hr>
 
-<form action="" method="POST">
-
     <?php foreach ($questions as $question): ?>
 
         <table border="1">
 
             <tr>
                 <td colspan="2">
-                    <p>問題ID: <?= $question['id'] ?></p>
+                    <p>問題ID: <?= h($question['id']) ?></p>
                 </td>
                 <td>
                     生徒の回答一覧
@@ -103,9 +70,9 @@ $questions = $db->query(
                     <label>
                         <input
                             type="radio"
-                            name="questions[<?= $question['id'] ?>][question_type]"
+                            name="questions[<?= h($question['id']) ?>][question_type]"
                             value="multiple_choice"
-                            <?= checked($question['question_type'], 'multiple_choice') ?>>
+                            <?= checked($question['question_type'], 'multiple_choice') ?> disabled>
                         選択問題
                     </label>
 
@@ -113,7 +80,7 @@ $questions = $db->query(
                         <input
                             type="radio"
                             value="short_answer"
-                            <?= checked($question['question_type'], 'short_answer') ?>>
+                            <?= checked($question['question_type'], 'short_answer') ?> disabled>
                         記述問題
                     </label>
 
@@ -121,7 +88,7 @@ $questions = $db->query(
                         <input
                             type="radio"
                             value="true_false"
-                            <?= checked($question['question_type'], 'true_false') ?>>
+                            <?= checked($question['question_type'], 'true_false') ?> disabled>
                         正誤問題
                     </label>
 
@@ -137,10 +104,8 @@ $questions = $db->query(
 
         <br>
 
-
     <?php endforeach; ?>
 
-</form>
 <hr>
 <a href="/teacher/dashboard.php">
     <h4>ダッシュボードに戻る</h4>

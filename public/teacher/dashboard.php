@@ -82,12 +82,12 @@ $pageTitle = '先生ページ|study!!';
                 <p> <?= h($stat['name']) ?></p>
             </td>
             <td>
-                <p><?= $stat['total'] ?></p>
+                <p><?= h($stat['total']) ?></p>
             </td>
 
 
-            <?php $rate = $stat['total'] > 0
-                ? round($stat['correct'] / $stat['total'] * 100)
+            <?php $rate = h($stat['total']) > 0
+                ? round(h($stat['correct']) / h($stat['total']) * 100)
                 : 0; ?>
 
             <td>
@@ -115,15 +115,6 @@ $pageTitle = '先生ページ|study!!';
         <li><a href="/teacher/questions/create.php">問題新規作成</a></li>
     </ul>
 </div>
-
-<!-- <div>
-    <h4>テスト解答管理(テスト用削除)</h4>
-    <ul>
-
-        <li><a href="/teacher/questions/answers.php?id=3">回答一覧</a></li>
-    </ul>
-</div> -->
-
 
 <hr>
 
