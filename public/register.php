@@ -12,8 +12,8 @@ $db = new Database();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+    $name  = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'];
 
     // バリデーション
@@ -29,7 +29,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
         // DBにINSERT
-        $users = $db->query(
+        $users = $db->execute(
             "INSERT INTO users (name , email , password_hash , role) VALUES (? , ? , ? , ?)",
             [$name, $email, $passwordHash, 'student']
 

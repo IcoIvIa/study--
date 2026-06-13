@@ -20,7 +20,7 @@ class Validator
     public function maxLength( string $field, string $label, int $max) : void
     {
         if ($max < mb_strlen($this->data[$field])) {
-            $this->errors[$field] = "{$label}文字数オーバー";
+            $this->errors[$field] = "{$label}は{$max}文字以内で入力してください";
         }
     }
 

@@ -16,7 +16,7 @@ $auth = new Auth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
-    $email = $_POST['email'];
+    $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'];
 
 
@@ -86,10 +86,11 @@ $pageTitle = "ログインページ|study!!";
 
         <h3 class="text-center">または</h3>
         <div class="text-center">
-            <button type="button" onclick="location.href='./register.php'">新規登録</button>
+            <a href="./register.php">
+                <button type="button">新規登録</button>
+            </a>
         </div>
     </div>
-    <hr>
 </form>
-
+<hr>
 <?php require_once __DIR__ . '/../templates/footer.php'; ?>

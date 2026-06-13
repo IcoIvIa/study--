@@ -16,6 +16,7 @@ function csrf_verify() : void {
         http_response_code(403);
         exit('不正なリクエストです');
     }
+    unset($_SESSION['csrf_token']);
 }
 
 function flash_set(string $message, string $type = 'success'): void {
@@ -33,6 +34,6 @@ function flash_get(): ?array {
 
 function show_error(array $errors, string $field): void {
     if (isset($errors[$field])) {
-        echo '<p>' . h($errors[$field]) . '</p>';
+        echo '<p class="color-red">' . h($errors[$field]) . '</p>';
     }
 }

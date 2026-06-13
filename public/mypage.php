@@ -23,8 +23,8 @@ $user = $db->query(
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     csrf_verify();
 
-    $name = $_POST['name'];
-    $email = $_POST['email'];
+    $name  = trim($_POST['name'] ?? '');
+    $email = trim($_POST['email'] ?? '');
     $password = $_POST['password'];
 
     $validator = new Validator($_POST);
@@ -38,12 +38,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $passwordHash = password_hash($password, PASSWORD_DEFAULT);
 
         if (!empty($password)) {
-            $user = $db->query(
+            $passwordHash = password_hash($password, PASSWORD_DEFAULT);
+            $db->execute(
                 "UPDATE users SET name = ?, email = ?, password_hash = ? WHERE id = ?",
                 [$name, $email, $passwordHash, $id]
             );
         } else {
-            $user = $db->query(
+            $db->execute(
                 "UPDATE users SET name = ?, email = ? WHERE id = ?",
                 [$name, $email, $id]
             );
